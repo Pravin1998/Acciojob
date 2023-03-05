@@ -1,0 +1,51 @@
+class Solution {
+    public List<List<String>> groupAnagrams(String[] strs) {
+        //t.c. = O(n*m), s.c. = O(n);
+
+    HashMap<String, ArrayList<String>> map = new HashMap<>();
+
+    //t.c. = O(n), n -> length of strs
+    for(String word : strs){
+        //create a freq map for this word
+
+        //t.c. = O(m), ,M->length of word
+        //s.c. = O(26), size of freqchar
+        int freqchar[] = new int [26];
+        for(char ch : word.toCharArray()){
+            freqchar[ch-'a']= freqchar[ch-'a']+1;
+        }
+
+        //generate code from this
+        //t.c = O(26) ~ O(1);
+        // s.c. = O(52) ~ O(1);
+
+
+        StringBuilder code = new StringBuilder("");
+        for(int i = 0; i <26 ; i++){
+            if(freqchar[i]>0){
+                code.append((char)(i+'a'));
+                code.append(freqchar[i]);
+            }
+        }
+
+        //check code is seen for the first time 
+        if(map.containsKey(code.toString()) == false){
+            ArrayList<String> group = new ArrayList<>();
+            group.add(word);
+            map.put(code.toString(),group);
+        }else{
+            ArrayList<String> group = map.get(code.toString());
+            group.add(word);
+            map.put(code.toString(),group);
+        }
+
+    }
+
+    //t.c. = O(n) -> length of a strs
+    List<List<String>> ans = new ArrayList<>();
+    for(String code : map.keySet()){
+        ans.add(map.get(code));
+    }
+    return ans;
+    }
+}
